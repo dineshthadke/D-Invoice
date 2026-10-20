@@ -61,6 +61,10 @@ const Settings = {
         document.getElementById('mysqlDatabase').value = d.database === 'dinvoice.db' ? 'dinvoice_db' : d.database;
       }
 
+      if (document.getElementById('settingsUserEmail') && typeof Auth !== 'undefined' && Auth.currentUser) {
+        document.getElementById('settingsUserEmail').textContent = `${Auth.currentUser.email} (UID: ${Auth.currentUser.uid})`;
+      }
+
     } catch (err) {
       console.warn('Could not load DB status:', err);
     }

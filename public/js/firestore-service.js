@@ -205,33 +205,51 @@ const FirestoreService = {
       }
     ];
 
+    // GUARD: Check if data already exists for this user. NEVER overwrite or delete existing invoices!
     if (this.isFirestoreLive()) {
       try {
         const userRef = firebaseDb.collection('users').doc(userId);
-        await userRef.set({ email, displayName, updatedAt: firebase.firestore.FieldValue.serverTimestamp() }, { merge: true });
+        await userRef.set({ email, displayName: displayName || email.split('@')[0], lastLoginAt: firebase.firestore.FieldValue.serverTimestamp() }, { merge: true });
 
-        // Save business
-        await userRef.collection('business').doc('profile').set(sampleBusiness);
-
-        // Save clients
-        for (const c of sampleClients) {
-          await userRef.collection('clients').doc(c.id).set(c);
+        const existingInvSnap = await userRef.collection('invoices').limit(1).get();
+        if (!existingInvSnap.empty) {
+          console.log(`ℹ️ User ${userId} already has saved invoices in Firestore. Restoring existing invoices...`);
+          return;
         }
 
-        // Save invoices
+        // Only seed if completely empty account
+        const existingBizDoc = await userRef.collection('business').doc('profile').get();
+        if (!existingBizDoc.exists) {
+          await userRef.collection('business').doc('profile').set(sampleBusiness);
+        }
+
+        const existingClientsSnap = await userRef.collection('clients').limit(1).get();
+        if (existingClientsSnap.empty) {
+          for (const c of sampleClients) {
+            await userRef.collection('clients').doc(c.id).set(c);
+          }
+        }
+
         for (const inv of sampleInvoices) {
           await userRef.collection('invoices').doc(inv.id).set(inv);
         }
+        console.log(`🌱 Seeded initial workspace for new user ${userId}`);
         return;
       } catch (err) {
-        console.warn('Firestore remote seed failed, falling back to local user store:', err.message);
+        console.warn('Firestore remote seed check failed, verifying local user store:', err.message);
       }
     }
 
-    // Local fallback
+    // Local fallback guard: NEVER overwrite existing user data
+    const existingLocal = this._getLocalUserData(userId);
+    if (existingLocal.invoices && existingLocal.invoices.length > 0) {
+      console.log(`ℹ️ User ${userId} already has ${existingLocal.invoices.length} saved invoices. Preserving all records.`);
+      return;
+    }
+
     this._saveLocalUserData(userId, {
-      business: sampleBusiness,
-      clients: sampleClients,
+      business: existingLocal.business || sampleBusiness,
+      clients: (existingLocal.clients && existingLocal.clients.length > 0) ? existingLocal.clients : sampleClients,
       invoices: sampleInvoices
     });
   },

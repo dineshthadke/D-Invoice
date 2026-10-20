@@ -1981,6 +1981,25 @@ textarea.form-control {
   color: #dc2626;
 }
 
+.btn-google-signin {
+  background: #ffffff;
+  color: #1f2937;
+  border: 1px solid #d1d5db;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  transition: all var(--transition-fast);
+}
+
+.btn-google-signin:hover {
+  background: #f9fafb;
+  border-color: #9ca3af;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+}
+
 /* Authentication Screen */
 .auth-view-wrapper {
   min-height: calc(85vh - 70px);
