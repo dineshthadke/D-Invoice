@@ -1,8 +1,18 @@
 // ============================================================
-// D-INVOICE API CLIENT
+// D-INVOICE API CLIENT (INTEGRATED WITH FIRESTORE USER STORAGE)
 // ============================================================
 
 const API = {
+  // Helper to ensure authenticated user UID is available
+  _getUserId() {
+    if (Auth && Auth.currentUser && Auth.currentUser.uid) {
+      return Auth.currentUser.uid;
+    }
+    // Fallback if accessed during initialization
+    return 'default_user';
+  },
+
+  // Fallback REST backend request
   async request(endpoint, options = {}) {
     try {
       const res = await fetch(endpoint, {
@@ -23,100 +33,90 @@ const API = {
     }
   },
 
-  // Stats
+  // Stats (Scoped to current authenticated Firebase user)
   async getStats() {
-    return this.request('/api/stats');
+    const uid = this._getUserId();
+    return FirestoreService.getStats(uid);
   },
 
-  // Business Profile
+  // Business Profile (Scoped to current authenticated Firebase user)
   async getBusiness() {
-    return this.request('/api/business');
+    const uid = this._getUserId();
+    return FirestoreService.getBusiness(uid);
   },
   async updateBusiness(data) {
-    return this.request('/api/business', {
-      method: 'PUT',
-      body: JSON.stringify(data)
-    });
+    const uid = this._getUserId();
+    return FirestoreService.updateBusiness(uid, data);
   },
   async uploadLogo(file) {
-    const formData = new FormData();
-    formData.append('logo', file);
-    const res = await fetch('/api/business/logo', {
-      method: 'POST',
-      body: formData
+    // Convert to base64 Data URL or upload to backend
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        resolve({ success: true, logo_url: e.target.result });
+      };
+      reader.onerror = () => reject(new Error('Failed to read image file'));
+      reader.readAsDataURL(file);
     });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error || 'Failed to upload logo');
-    return data;
   },
 
-  // Clients
+  // Clients (Scoped to current authenticated Firebase user)
   async getClients(search = '') {
-    const q = search ? `?q=${encodeURIComponent(search)}` : '';
-    return this.request(`/api/clients${q}`);
+    const uid = this._getUserId();
+    return FirestoreService.getClients(uid, search);
   },
   async getClient(id) {
-    return this.request(`/api/clients/${id}`);
+    const uid = this._getUserId();
+    return FirestoreService.getClient(uid, id);
   },
   async createClient(data) {
-    return this.request('/api/clients', {
-      method: 'POST',
-      body: JSON.stringify(data)
-    });
+    const uid = this._getUserId();
+    return FirestoreService.createClient(uid, data);
   },
   async updateClient(id, data) {
-    return this.request(`/api/clients/${id}`, {
-      method: 'PUT',
-      body: JSON.stringify(data)
-    });
+    const uid = this._getUserId();
+    return FirestoreService.updateClient(uid, id, data);
   },
   async deleteClient(id) {
-    return this.request(`/api/clients/${id}`, {
-      method: 'DELETE'
-    });
+    const uid = this._getUserId();
+    return FirestoreService.deleteClient(uid, id);
   },
 
-  // Invoices
+  // Invoices (Scoped to current authenticated Firebase user in Firestore)
   async getInvoices(params = {}) {
-    const query = new URLSearchParams(params).toString();
-    return this.request(`/api/invoices${query ? '?' + query : ''}`);
+    const uid = this._getUserId();
+    return FirestoreService.getInvoices(uid, params);
   },
   async getNextInvoiceNumber() {
-    return this.request('/api/invoices/next-number');
+    const uid = this._getUserId();
+    return FirestoreService.getNextInvoiceNumber(uid);
   },
   async getInvoice(id) {
-    return this.request(`/api/invoices/${id}`);
+    const uid = this._getUserId();
+    return FirestoreService.getInvoice(uid, id);
   },
   async createInvoice(data) {
-    return this.request('/api/invoices', {
-      method: 'POST',
-      body: JSON.stringify(data)
-    });
+    const uid = this._getUserId();
+    return FirestoreService.createInvoice(uid, data);
   },
   async updateInvoice(id, data) {
-    return this.request(`/api/invoices/${id}`, {
-      method: 'PUT',
-      body: JSON.stringify(data)
-    });
+    const uid = this._getUserId();
+    return FirestoreService.updateInvoice(uid, id, data);
   },
   async updateInvoiceStatus(id, statusData) {
-    return this.request(`/api/invoices/${id}/status`, {
-      method: 'PATCH',
-      body: JSON.stringify(statusData)
-    });
+    const uid = this._getUserId();
+    return FirestoreService.updateInvoiceStatus(uid, id, statusData);
   },
   async duplicateInvoice(id) {
-    return this.request(`/api/invoices/${id}/duplicate`, {
-      method: 'POST'
-    });
+    const uid = this._getUserId();
+    return FirestoreService.duplicateInvoice(uid, id);
   },
   async deleteInvoice(id) {
-    return this.request(`/api/invoices/${id}`, {
-      method: 'DELETE'
-    });
+    const uid = this._getUserId();
+    return FirestoreService.deleteInvoice(uid, id);
   },
 
-  // Settings / Database
+  // Database / System Settings
   async getDbStatus() {
     return this.request('/api/settings/db');
   },

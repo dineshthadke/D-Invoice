@@ -14,8 +14,8 @@ const App = {
     // Initial check of DB status
     Settings.loadDbStatus();
 
-    // Load initial view
-    this.navigateTo('dashboard');
+    // Initialize Firebase Authentication
+    Auth.init();
   },
 
   setupNavigation() {
@@ -58,6 +58,14 @@ const App = {
   },
 
   navigateTo(tabName) {
+    // Auth Guard: If not signed in, restrict to auth view
+    if (!Auth.currentUser) {
+      document.querySelectorAll('.app-view').forEach(view => view.classList.remove('active'));
+      const authView = document.getElementById('view-auth');
+      if (authView) authView.style.display = 'block';
+      return;
+    }
+
     this.currentTab = tabName;
 
     // Close mobile nav
