@@ -2,14 +2,15 @@
 // D-INVOICE FIREBASE CONFIGURATION & INITIALIZATION
 // ============================================================
 
-// Default Firebase Configuration (Sample / Placeholder)
+// Live Firebase Configuration for dinvoice-billing
 const defaultFirebaseConfig = {
-  apiKey: "AIzaSyDemoProjectKey-For-DInvoice-Web",
-  authDomain: "d-invoice-app.firebaseapp.com",
-  projectId: "d-invoice-app",
-  storageBucket: "d-invoice-app.appspot.com",
-  messagingSenderId: "1029384756",
-  appId: "1:1029384756:web:a1b2c3d4e5f6g7h8i9j0k1"
+  apiKey: "AIzaSyCrr3J4gvPOEsGnroXOAxFYO7V1qcgc3D0",
+  authDomain: "dinvoice-billing.firebaseapp.com",
+  projectId: "dinvoice-billing",
+  storageBucket: "dinvoice-billing.firebasestorage.app",
+  messagingSenderId: "972994137714",
+  appId: "1:972994137714:web:6c9fd16a589095a777fceb",
+  measurementId: "G-E0132RJ7HW"
 };
 
 // Validates whether an API key is a genuine live Google Firebase Web API Key

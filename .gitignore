@@ -1,3 +1,4 @@
 node_modules/
 .env.local
 dinvoice.db-journal
+.firebase/
