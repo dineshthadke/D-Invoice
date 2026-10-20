@@ -1,4 +1,5 @@
 # D-Invoice — Modern Invoice Generator & Billing Suite
+**Site is Live at URL** =  https://dinvoice-billing.web.app
 
 **D-Invoice** is a modern, responsive, and full-featured invoice generator web application designed with a professional blue-and-white color palette. It complies with Indian GST requirements (CGST, SGST, IGST) and provides standard A4 PDF downloads, printing, client management, business branding, and permanent database storage with MySQL.
 
@@ -74,58 +75,8 @@
     - Seamlessly adapts across desktops, laptops, tablets, and mobile smartphones.
     - Accessible navigation with mobile hamburger drawer and keyboard shortcuts (ESC to close modals).
 
----
-
-## 🚀 Getting Started
-
-### 1. Prerequisites
-- Node.js (v18 or higher; tested on v24)
-- (Optional) MySQL Server 8.0 running locally on port 3306
-
-### 2. Run the Application
-```bash
-# Start the production server
-npm start
-
-# Or start in watch mode for development
-npm run dev
-```
-
-Open your browser and navigate to:
-```
-http://localhost:3000
-```
-
----
-
-## ⚙️ MySQL Configuration
-
-To connect D-Invoice to your MySQL Server:
-
-### Option A: Via the Web Application (Easiest)
-1. Open D-Invoice in your browser (`http://localhost:3000`).
-2. Click on the **Database** tab in the top navigation bar.
-3. Enter your MySQL username (usually `root`), password, host (`localhost`), and port (`3306`).
-4. Click **Test & Connect MySQL**.
-5. D-Invoice will verify the connection, create the `dinvoice_db` database, execute the table migrations, and automatically persist your credentials to `.env`.
-
-### Option B: Via `.env` File
-Edit the `.env` file in the project root directory:
-```env
-PORT=3000
-DB_HOST=localhost
-DB_PORT=3306
-DB_USER=root
-DB_PASSWORD=your_mysql_password
-DB_NAME=dinvoice_db
-```
-Then restart the server with `npm start`.
-
----
-
 ## 📁 Project Structure
 
-```
 Antigravity/
 ├── package.json              # Project dependencies and scripts
 ├── .env                      # Active environment configuration
@@ -158,27 +109,3 @@ Antigravity/
     │   ├── business.js       # Business profile & bank details controller
     │   └── settings.js       # Database status & MySQL switcher
     └── uploads/              # Uploaded logos and business media
-```
-
----
-
-## 🧪 Verified API Endpoints
-
-- `GET /api/stats` — Dashboard metrics & revenue trends
-- `GET /api/business` — Retrieve business profile
-- `PUT /api/business` — Update business profile
-- `POST /api/business/logo` — Upload business logo
-- `GET /api/clients` — Search & list clients
-- `POST /api/clients` — Add a new client
-- `PUT /api/clients/:id` — Update client
-- `DELETE /api/clients/:id` — Delete client
-- `GET /api/invoices` — List invoices (search & filter by status)
-- `GET /api/invoices/next-number` — Auto-generate sequential invoice number
-- `GET /api/invoices/:id` — Get full invoice details with items & business info
-- `POST /api/invoices` — Create invoice with dynamic line items & tax breakdown
-- `PUT /api/invoices/:id` — Update existing invoice
-- `PATCH /api/invoices/:id/status` — Update payment status & mode
-- `POST /api/invoices/:id/duplicate` — Clone invoice with new number
-- `DELETE /api/invoices/:id` — Delete invoice
-- `GET /api/settings/db` — Check database engine status
-- `POST /api/settings/db/test` — Test & switch to MySQL server connection
