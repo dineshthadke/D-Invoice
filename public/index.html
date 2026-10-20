@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>D-Invoice — Modern Invoice Generator & GST Billing</title>
+  <meta name="description" content="Generate, manage, print, and download professional GST-compliant invoices with D-Invoice. Clean, responsive, and powerful.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/print.css" media="print">
+  <!-- html2pdf.js for client-side PDF export -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</head>
+<body>
+  <!-- App Wrapper -->
+  <div class="app-layout" id="appLayout">
+    
+    <!-- Top Navigation Bar -->
+    <header class="app-header">
+      <div class="header-container">
+        <div class="brand-group">
+          <button class="mobile-menu-toggle" id="mobileMenuBtn" aria-label="Toggle navigation menu">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+          </button>
+          <div class="brand-logo-wrap" onclick="App.navigateTo('dashboard')">
+            <div class="brand-badge-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+            </div>
+            <div class="brand-text">
+              <span class="brand-title">D-INVOICE</span>
+              <span class="brand-tag">PRO BILLING</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Center Nav Tabs -->
+        <nav class="nav-links" id="mainNav">
+          <button class="nav-item active" data-tab="dashboard">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"></rect><rect x="14" y="3" width="7" height="5"></rect><rect x="14" y="12" width="7" height="9"></rect><rect x="3" y="16" width="7" height="5"></rect></svg>
+            <span>Dashboard</span>
+          </button>
+          <button class="nav-item" data-tab="invoices">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><line x1="9" y1="15" x2="15" y2="15"></line></svg>
+            <span>Invoices</span>
+          </button>
+          <button class="nav-item" data-tab="clients">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+            <span>Clients</span>
+          </button>
+          <button class="nav-item" data-tab="business">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+            <span>Business Profile</span>
+          </button>
+          <button class="nav-item" data-tab="settings">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+            <span>Database</span>
+          </button>
+        </nav>
+
+        <!-- Right Header CTA -->
+        <div class="header-actions">
+          <div class="db-pill-badge" id="dbStatusBadge" onclick="App.navigateTo('settings')" title="Click to view Database Settings">
+            <span class="db-pulse-dot"></span>
+            <span class="db-name-label" id="dbBadgeText">DB: SQLite</span>
+          </div>
+
+          <button class="btn btn-primary btn-create" id="headerCreateBtn" onclick="App.openCreateInvoice()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            <span>Create Invoice</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="app-main">
+      <div class="container">
+
+        <!-- VIEW 1: DASHBOARD -->
+        <section class="app-view active" id="view-dashboard">
+          <div class="page-header">
+            <div>
+              <h1 class="page-title">Billing Dashboard</h1>
+              <p class="page-subtitle">Overview of your business cashflow, pending receivables, and recent billing activity.</p>
+            </div>
+            <div class="page-actions">
+              <button class="btn btn-secondary" onclick="Dashboard.refresh()">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+                <span>Refresh</span>
+              </button>
+              <button class="btn btn-primary" onclick="App.openCreateInvoice()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                <span>New Invoice</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Stat Metric Cards -->
+          <div class="metrics-grid">
+            <div class="metric-card metric-primary">
+              <div class="metric-header">
+                <span class="metric-title">Total Invoiced</span>
+                <div class="metric-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                </div>
+              </div>
+              <div class="metric-value" id="statTotalAmount">₹0.00</div>
+              <div class="metric-footer">
+                <span class="metric-badge" id="statTotalCount">0 invoices total</span>
+                <span class="metric-hint">Cumulative billed</span>
+              </div>
+            </div>
+
+            <div class="metric-card metric-success">
+              <div class="metric-header">
+                <span class="metric-title">Paid Invoices</span>
+                <div class="metric-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </div>
+              </div>
+              <div class="metric-value text-success" id="statPaidAmount">₹0.00</div>
+              <div class="metric-footer">
+                <span class="metric-badge badge-success" id="statPaidCount">0 Paid</span>
+                <span class="metric-hint" id="statPaidPercent">0% collected</span>
+              </div>
+            </div>
+
+            <div class="metric-card metric-warning">
+              <div class="metric-header">
+                <span class="metric-title">Pending Invoices</span>
+                <div class="metric-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                </div>
+              </div>
+              <div class="metric-value text-warning" id="statPendingAmount">₹0.00</div>
+              <div class="metric-footer">
+                <span class="metric-badge badge-warning" id="statPendingCount">0 Pending</span>
+                <span class="metric-hint">Awaiting payment</span>
+              </div>
+            </div>
+
+            <div class="metric-card metric-danger">
+              <div class="metric-header">
+                <span class="metric-title">Overdue Invoices</span>
+                <div class="metric-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                </div>
+              </div>
+              <div class="metric-value text-danger" id="statOverdueAmount">₹0.00</div>
+              <div class="metric-footer">
+                <span class="metric-badge badge-danger" id="statOverdueCount">0 Overdue</span>
+                <span class="metric-hint">Past due date</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Action Banner & Trend -->
+          <div class="dashboard-split-row">
+            <!-- Monthly Trends Bar -->
+            <div class="card card-trend">
+              <div class="card-header">
+                <div>
+                  <h3 class="card-title">Revenue Trends (Recent Months)</h3>
+                  <p class="card-subtitle">Monthly comparison of total billed vs paid collections</p>
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="trend-bars-container" id="monthlyTrendsContainer">
+                  <!-- Generated dynamically -->
+                </div>
+              </div>
+            </div>
+
+            <!-- Quick Start Card -->
+            <div class="card card-quickstart">
+              <div class="card-header">
+                <h3 class="card-title">Quick Actions</h3>
+              </div>
+              <div class="card-body quickstart-actions">
+                <button class="quickstart-item" onclick="App.openCreateInvoice()">
+                  <div class="qs-icon qs-primary"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg></div>
+                  <div class="qs-text">
+                    <strong>Generate New Invoice</strong>
+                    <span>With automatic GST & A4 preview</span>
+                  </div>
+                </button>
+                <button class="quickstart-item" onclick="Clients.openAddModal()">
+                  <div class="qs-icon qs-info"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg></div>
+                  <div class="qs-text">
+                    <strong>Add New Client</strong>
+                    <span>Save billing details and GSTIN</span>
+                  </div>
+                </button>
+                <button class="quickstart-item" onclick="App.navigateTo('business')">
+                  <div class="qs-icon qs-accent"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg></div>
+                  <div class="qs-text">
+                    <strong>Business Profile & Bank Info</strong>
+                    <span>Customize branding & UPI payment</span>
+                  </div>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Recent Invoices Table -->
+          <div class="card card-table">
+            <div class="card-header table-card-header">
+              <div>
+                <h3 class="card-title">Recent Invoices</h3>
+                <p class="card-subtitle">Latest generated invoices and current payment statuses</p>
+              </div>
+              <button class="btn btn-sm btn-outline" onclick="App.navigateTo('invoices')">
+                View All Invoices →
+              </button>
+            </div>
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Invoice No</th>
+                    <th>Client</th>
+                    <th>Date</th>
+                    <th>Due Date</th>
+                    <th>Amount (₹)</th>
+                    <th>Status</th>
+                    <th class="text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="dashboardRecentTableBody">
+                  <tr><td colspan="7" class="table-loading">Loading recent invoices...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- VIEW 2: ALL INVOICES -->
+        <section class="app-view" id="view-invoices">
+          <div class="page-header">
+            <div>
+              <h1 class="page-title">Invoice Management</h1>
+              <p class="page-subtitle">Track, filter, download, print, edit, and duplicate all invoices.</p>
+            </div>
+            <button class="btn btn-primary" onclick="App.openCreateInvoice()">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+              <span>Create Invoice</span>
+            </button>
+          </div>
+
+          <!-- Filters Bar -->
+          <div class="filter-toolbar card">
+            <div class="search-input-wrap">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+              <input type="text" id="invoiceSearchInput" placeholder="Search by invoice number, client, or company..." oninput="InvoiceList.onSearch(this.value)">
+            </div>
+            <div class="filter-controls">
+              <div class="filter-select-group">
+                <label for="invoiceStatusFilter">Status:</label>
+                <select id="invoiceStatusFilter" onchange="InvoiceList.onFilterChange()">
+                  <option value="all">All Statuses</option>
+                  <option value="paid">Paid</option>
+                  <option value="pending">Pending</option>
+                  <option value="overdue">Overdue</option>
+                  <option value="draft">Draft</option>
+                  <option value="cancelled">Cancelled</option>
+                </select>
+              </div>
+              <button class="btn btn-sm btn-secondary" onclick="InvoiceList.resetFilters()">Reset</button>
+            </div>
+          </div>
+
+          <!-- Invoices Data Table -->
+          <div class="card card-table">
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Invoice #</th>
+                    <th>Client Name / Company</th>
+                    <th>Issue Date</th>
+                    <th>Due Date</th>
+                    <th>Tax Type</th>
+                    <th>Total (₹)</th>
+                    <th>Status</th>
+                    <th class="text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="invoicesTableBody">
+                  <tr><td colspan="8" class="table-loading">Loading invoices...</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="table-pagination" id="invoicesPagination">
+              <span id="invoiceCountLabel">Showing 0 invoices</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- VIEW 3: CREATE / EDIT INVOICE -->
+        <section class="app-view" id="view-create-invoice">
+          <div class="page-header">
+            <div>
+              <div class="breadcrumb-back" onclick="App.navigateTo('invoices')">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+                <span>Back to Invoices</span>
+              </div>
+              <h1 class="page-title" id="invoiceFormTitle">New Invoice</h1>
+              <p class="page-subtitle">Fill in details below to generate a professional GST-compliant invoice.</p>
+            </div>
+            <div class="page-actions">
+              <button type="button" class="btn btn-secondary" onclick="InvoiceForm.previewDraft()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                <span>Preview A4</span>
+              </button>
+              <button type="button" class="btn btn-primary" onclick="InvoiceForm.save(false)">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+                <span>Save Invoice</span>
+              </button>
+            </div>
+          </div>
+
+          <form id="invoiceEditorForm" onsubmit="event.preventDefault(); InvoiceForm.save(false);">
+            <input type="hidden" id="formInvoiceId" value="">
+
+            <!-- Header Config Grid -->
+            <div class="invoice-form-grid">
+              
+              <!-- Card: Invoice Meta -->
+              <div class="card form-card">
+                <div class="card-header">
+                  <h3 class="card-title">1. Invoice Details</h3>
+                </div>
+                <div class="card-body">
+                  <div class="form-row">
+                    <div class="form-group flex-2">
+                      <label for="invNumber">Invoice Number <span class="required">*</span></label>
+                      <div class="input-with-action">
+                        <input type="text" id="invNumber" class="form-control font-mono" required placeholder="INV-2026-0001">
+                        <button type="button" class="btn-icon-addon" title="Generate New Number" onclick="InvoiceForm.generateNextNumber()">
+                          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+                        </button>
+                      </div>
+                    </div>
+                    <div class="form-group flex-1">
+                      <label for="invPoNumber">P.O. / Ref Number</label>
+                      <input type="text" id="invPoNumber" class="form-control" placeholder="e.g. PO-8921">
+                    </div>
+                  </div>
+
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label for="invDate">Invoice Date <span class="required">*</span></label>
+                      <input type="date" id="invDate" class="form-control" required onchange="InvoiceForm.onInvoiceDateChange()">
+                    </div>
+                    <div class="form-group">
+                      <label for="invDueDate">Due Date <span class="required">*</span></label>
+                      <input type="date" id="invDueDate" class="form-control" required>
+                    </div>
+                  </div>
+
+                  <!-- Quick Payment Terms Buttons -->
+                  <div class="quick-terms-row">
+                    <span class="terms-label">Quick Terms:</span>
+                    <button type="button" class="term-pill" onclick="InvoiceForm.setPaymentTerms(0)">Due on Receipt</button>
+                    <button type="button" class="term-pill" onclick="InvoiceForm.setPaymentTerms(15)">Net 15</button>
+                    <button type="button" class="term-pill" onclick="InvoiceForm.setPaymentTerms(30)">Net 30</button>
+                    <button type="button" class="term-pill" onclick="InvoiceForm.setPaymentTerms(60)">Net 60</button>
+                  </div>
+
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label for="invStatus">Status</label>
+                      <select id="invStatus" class="form-control">
+                        <option value="pending">Pending</option>
+                        <option value="paid">Paid</option>
+                        <option value="draft">Draft</option>
+                        <option value="overdue">Overdue</option>
+                        <option value="cancelled">Cancelled</option>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label for="invPlaceOfSupply">Place of Supply (State) <span class="required">*</span></label>
+                      <select id="invPlaceOfSupply" class="form-control" onchange="InvoiceForm.onPlaceOfSupplyChange()">
+                        <!-- Indian States loaded dynamically -->
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Card: Client Details -->
+              <div class="card form-card">
+                <div class="card-header space-between">
+                  <h3 class="card-title">2. Client Details</h3>
+                  <button type="button" class="btn btn-sm btn-outline" onclick="Clients.openAddModal(InvoiceForm.onNewClientCreated)">
+                    + New Client
+                  </button>
+                </div>
+                <div class="card-body">
+                  <div class="form-group">
+                    <label for="invClientSelect">Select Saved Client <span class="required">*</span></label>
+                    <select id="invClientSelect" class="form-control" required onchange="InvoiceForm.onClientSelected(this.value)">
+                      <option value="">-- Choose Client --</option>
+                    </select>
+                  </div>
+
+                  <!-- Preview of selected client -->
+                  <div class="client-preview-box" id="clientPreviewBox">
+                    <div class="client-preview-empty">No client selected. Pick from dropdown above or click "+ New Client".</div>
+                    <div class="client-preview-details" id="clientPreviewDetails" style="display: none;">
+                      <div class="cp-title" id="cpName">Client Name</div>
+                      <div class="cp-sub" id="cpCompany">Company</div>
+                      <div class="cp-row"><strong>Email:</strong> <span id="cpEmail"></span></div>
+                      <div class="cp-row"><strong>Phone:</strong> <span id="cpPhone"></span></div>
+                      <div class="cp-row"><strong>Address:</strong> <span id="cpAddress"></span></div>
+                      <div class="cp-row"><strong>GSTIN:</strong> <span id="cpGstin" class="font-mono"></span></div>
+                      <div class="cp-row"><strong>State:</strong> <span id="cpState"></span></div>
+                    </div>
+                  </div>
+
+                  <div class="tax-type-indicator" id="taxTypeIndicator">
+                    <span class="tax-badge" id="taxTypeBadge">Intra-State GST (CGST + SGST)</span>
+                    <span class="tax-hint" id="taxTypeHint">Supplier and Client are in the same state.</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card: Line Items Table -->
+            <div class="card form-card items-card">
+              <div class="card-header space-between">
+                <div>
+                  <h3 class="card-title">3. Products & Services (Line Items)</h3>
+                  <p class="card-subtitle">Add products or services with quantity, unit price, discount, and tax rate.</p>
+                </div>
+                <button type="button" class="btn btn-sm btn-primary" onclick="InvoiceForm.addItemRow()">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                  <span>Add Line Item</span>
+                </button>
+              </div>
+
+              <div class="table-responsive">
+                <table class="items-table" id="itemsTable">
+                  <thead>
+                    <tr>
+                      <th style="width: 38px;">#</th>
+                      <th style="min-width: 240px;">Item Description <span class="required">*</span></th>
+                      <th style="width: 110px;">HSN / SAC</th>
+                      <th style="width: 90px;">Qty</th>
+                      <th style="width: 90px;">Unit</th>
+                      <th style="width: 120px;">Rate (₹) <span class="required">*</span></th>
+                      <th style="width: 95px;">Disc %</th>
+                      <th style="width: 110px;">GST %</th>
+                      <th style="width: 130px;" class="text-right">Taxable (₹)</th>
+                      <th style="width: 130px;" class="text-right">Total (₹)</th>
+                      <th style="width: 45px;"></th>
+                    </tr>
+                  </thead>
+                  <tbody id="itemsTableBody">
+                    <!-- Dynamic Rows inserted here -->
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="card-footer-action">
+                <button type="button" class="btn btn-outline" onclick="InvoiceForm.addItemRow()">
+                  + Add Another Item
+                </button>
+              </div>
+            </div>
+
+            <!-- Bottom Row: Notes & Calculations -->
+            <div class="invoice-bottom-grid">
+              
+              <!-- Left: Notes & Terms -->
+              <div class="card form-card">
+                <div class="card-header">
+                  <h3 class="card-title">4. Notes & Payment Terms</h3>
+                </div>
+                <div class="card-body">
+                  <div class="form-group">
+                    <label for="invNotes">Customer Notes</label>
+                    <textarea id="invNotes" class="form-control" rows="3" placeholder="Notes or greetings visible on invoice..."></textarea>
+                  </div>
+                  <div class="form-group">
+                    <label for="invTerms">Terms & Conditions</label>
+                    <textarea id="invTerms" class="form-control" rows="4" placeholder="Payment terms, bank conditions, jurisdiction..."></textarea>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Right: Calculations Summary Card -->
+              <div class="card form-card summary-card">
+                <div class="card-header">
+                  <h3 class="card-title">5. Summary & Taxes</h3>
+                </div>
+                <div class="card-body">
+                  <div class="summary-line">
+                    <span>Subtotal (Before Tax)</span>
+                    <span class="font-mono" id="calcSubtotal">₹0.00</span>
+                  </div>
+
+                  <div class="summary-line-input">
+                    <div class="sli-label">
+                      <span>Overall Discount</span>
+                      <select id="calcDiscountType" onchange="InvoiceForm.calculateTotals()">
+                        <option value="fixed">₹ Flat</option>
+                        <option value="percent">% Percent</option>
+                      </select>
+                    </div>
+                    <div class="sli-input">
+                      <input type="number" id="calcDiscountValue" class="form-control text-right" min="0" step="0.01" value="0" oninput="InvoiceForm.calculateTotals()">
+                    </div>
+                  </div>
+
+                  <div class="summary-line text-muted" id="calcDiscountRow" style="display: none;">
+                    <span>Discount Amount</span>
+                    <span class="font-mono text-danger" id="calcDiscountAmount">-₹0.00</span>
+                  </div>
+
+                  <!-- Tax Breakdown -->
+                  <div class="tax-breakdown-box" id="taxBreakdownBox">
+                    <div class="summary-line" id="cgstRow">
+                      <span>CGST</span>
+                      <span class="font-mono" id="calcCgst">₹0.00</span>
+                    </div>
+                    <div class="summary-line" id="sgstRow">
+                      <span>SGST</span>
+                      <span class="font-mono" id="calcSgst">₹0.00</span>
+                    </div>
+                    <div class="summary-line" id="igstRow" style="display: none;">
+                      <span>IGST</span>
+                      <span class="font-mono" id="calcIgst">₹0.00</span>
+                    </div>
+                    <div class="summary-line font-medium">
+                      <span>Total Tax (GST)</span>
+                      <span class="font-mono" id="calcTotalTax">₹0.00</span>
+                    </div>
+                  </div>
+
+                  <div class="summary-line-input">
+                    <div class="sli-label">
+                      <span>Shipping / Extra Charges (₹)</span>
+                    </div>
+                    <div class="sli-input">
+                      <input type="number" id="calcShipping" class="form-control text-right" min="0" step="0.01" value="0" oninput="InvoiceForm.calculateTotals()">
+                    </div>
+                  </div>
+
+                  <div class="summary-line text-muted">
+                    <span>Round Off</span>
+                    <span class="font-mono" id="calcRoundOff">₹0.00</span>
+                  </div>
+
+                  <div class="grand-total-divider"></div>
+
+                  <div class="grand-total-line">
+                    <span class="gt-label">Total Payable:</span>
+                    <span class="gt-value font-mono" id="calcGrandTotal">₹0.00</span>
+                  </div>
+
+                  <!-- Amount in Words -->
+                  <div class="amount-in-words-box">
+                    <span class="aiw-label">Amount in words:</span>
+                    <p class="aiw-text" id="calcAmountWords">Zero Rupees Only</p>
+                  </div>
+                </div>
+
+                <div class="card-footer-buttons">
+                  <button type="button" class="btn btn-secondary w-full" onclick="InvoiceForm.previewDraft()">
+                    Preview A4 Format
+                  </button>
+                  <button type="submit" class="btn btn-primary btn-lg w-full">
+                    Save & Generate Invoice
+                  </button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </section>
+
+        <!-- VIEW 4: CLIENTS MANAGEMENT -->
+        <section class="app-view" id="view-clients">
+          <div class="page-header">
+            <div>
+              <h1 class="page-title">Client Directory</h1>
+              <p class="page-subtitle">Manage customer profiles, billing addresses, phone numbers, and GSTIN details.</p>
+            </div>
+            <button class="btn btn-primary" onclick="Clients.openAddModal()">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+              <span>Add New Client</span>
+            </button>
+          </div>
+
+          <div class="card card-table">
+            <div class="filter-toolbar">
+              <div class="search-input-wrap">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <input type="text" id="clientSearchInput" placeholder="Search clients by name, company, email, or GSTIN..." oninput="Clients.onSearch(this.value)">
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Client Name</th>
+                    <th>Company Name</th>
+                    <th>Email & Phone</th>
+                    <th>City, State</th>
+                    <th>GSTIN</th>
+                    <th class="text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="clientsTableBody">
+                  <tr><td colspan="6" class="table-loading">Loading clients...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- VIEW 5: BUSINESS PROFILE -->
+        <section class="app-view" id="view-business">
+          <div class="page-header">
+            <div>
+              <h1 class="page-title">Business Profile & Settings</h1>
+              <p class="page-subtitle">Configure your company identity, address, GSTIN, bank details, and default terms.</p>
+            </div>
+            <button class="btn btn-primary" onclick="Business.save()">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+              <span>Save Business Profile</span>
+            </button>
+          </div>
+
+          <form id="businessProfileForm" onsubmit="event.preventDefault(); Business.save();">
+            <div class="profile-grid">
+              
+              <!-- Company Info -->
+              <div class="card form-card">
+                <div class="card-header">
+                  <h3 class="card-title">Company Identity & Logo</h3>
+                </div>
+                <div class="card-body">
+                  <div class="logo-upload-wrap">
+                    <div class="logo-preview-box" id="logoPreviewContainer">
+                      <img id="logoPreviewImg" src="" alt="Business Logo" style="display: none;">
+                      <div class="logo-placeholder" id="logoPlaceholder">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                        <span>No Logo Uploaded</span>
+                      </div>
+                    </div>
+                    <div class="logo-upload-controls">
+                      <label class="btn btn-sm btn-outline btn-upload" for="logoFileInput">
+                        Upload Logo Image
+                      </label>
+                      <input type="file" id="logoFileInput" accept="image/*" style="display: none;" onchange="Business.onLogoFileChange(event)">
+                      <button type="button" class="btn btn-sm btn-ghost text-danger" id="btnRemoveLogo" onclick="Business.removeLogo()" style="display: none;">
+                        Remove Logo
+                      </button>
+                      <span class="upload-hint">PNG, JPG, or SVG. Recommended size: 300x120px.</span>
+                    </div>
+                  </div>
+
+                  <div class="form-group mt-4">
+                    <label for="bizName">Business / Company Name <span class="required">*</span></label>
+                    <input type="text" id="bizName" class="form-control" required placeholder="e.g. TechNova Innovations Pvt Ltd">
+                  </div>
+
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label for="bizEmail">Business Email <span class="required">*</span></label>
+                      <input type="email" id="bizEmail" class="form-control" required placeholder="billing@mycompany.com">
+                    </div>
+                    <div class="form-group">
+                      <label for="bizPhone">Phone Number <span class="required">*</span></label>
+                      <input type="text" id="bizPhone" class="form-control" required placeholder="+91 98765 43210">
+                    </div>
+                  </div>
+
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label for="bizGstin">GSTIN (Optional / Recommended)</label>
+                      <input type="text" id="bizGstin" class="form-control font-mono" placeholder="29AAACT9876Q1Z5" maxlength="15">
+                    </div>
+                    <div class="form-group">
+                      <label for="bizPan">PAN Number</label>
+                      <input type="text" id="bizPan" class="form-control font-mono" placeholder="AAACT9876Q" maxlength="10">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Address Details -->
+              <div class="card form-card">
+                <div class="card-header">
+                  <h3 class="card-title">Registered Office Address</h3>
+                </div>
+                <div class="card-body">
+                  <div class="form-group">
+                    <label for="bizAddress1">Address Line 1 <span class="required">*</span></label>
+                    <input type="text" id="bizAddress1" class="form-control" required placeholder="Building, Suite, Street name">
+                  </div>
+                  <div class="form-group">
+                    <label for="bizAddress2">Address Line 2</label>
+                    <input type="text" id="bizAddress2" class="form-control" placeholder="Area, Landmark">
+                  </div>
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label for="bizCity">City <span class="required">*</span></label>
+                      <input type="text" id="bizCity" class="form-control" required placeholder="e.g. Bengaluru">
+                    </div>
+                    <div class="form-group">
+                      <label for="bizState">State <span class="required">*</span></label>
+                      <select id="bizState" class="form-control" required>
+                        <!-- Loaded dynamically -->
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label for="bizPincode">PIN / Postal Code <span class="required">*</span></label>
+                      <input type="text" id="bizPincode" class="form-control" required placeholder="560100">
+                    </div>
+                    <div class="form-group">
+                      <label for="bizCountry">Country</label>
+                      <input type="text" id="bizCountry" class="form-control" value="India">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Bank & Payment Details -->
+              <div class="card form-card">
+                <div class="card-header">
+                  <h3 class="card-title">Bank & UPI Settlement Details</h3>
+                </div>
+                <div class="card-body">
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label for="bizBankName">Bank Name</label>
+                      <input type="text" id="bizBankName" class="form-control" placeholder="e.g. HDFC Bank">
+                    </div>
+                    <div class="form-group">
+                      <label for="bizAccountName">Beneficiary Account Name</label>
+                      <input type="text" id="bizAccountName" class="form-control" placeholder="TechNova Innovations Pvt Ltd">
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label for="bizAccountNumber">Account Number</label>
+                      <input type="text" id="bizAccountNumber" class="form-control font-mono" placeholder="50200049283719">
+                    </div>
+                    <div class="form-group">
+                      <label for="bizIfsc">IFSC Code</label>
+                      <input type="text" id="bizIfsc" class="form-control font-mono" placeholder="HDFC0000240">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="bizUpi">UPI ID (For Instant QR Code on Invoices)</label>
+                    <input type="text" id="bizUpi" class="form-control font-mono" placeholder="technova@okhdfcbank">
+                    <span class="field-hint">Generates a dynamic scan-and-pay UPI QR code directly on your printed A4 invoices!</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Default Notes & Terms -->
+              <div class="card form-card">
+                <div class="card-header">
+                  <h3 class="card-title">Default Invoice Notes & Terms</h3>
+                </div>
+                <div class="card-body">
+                  <div class="form-group">
+                    <label for="bizNotes">Default Customer Notes</label>
+                    <textarea id="bizNotes" class="form-control" rows="3" placeholder="Thank you for your business!"></textarea>
+                  </div>
+                  <div class="form-group">
+                    <label for="bizTerms">Default Terms & Conditions</label>
+                    <textarea id="bizTerms" class="form-control" rows="4" placeholder="1. Payment is due within 15 days..."></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-action-footer">
+              <button type="submit" class="btn btn-primary btn-lg">
+                Save Business Profile
+              </button>
+            </div>
+          </form>
+        </section>
+
+        <!-- VIEW 6: DATABASE SETTINGS -->
+        <section class="app-view" id="view-settings">
+          <div class="page-header">
+            <div>
+              <h1 class="page-title">Database & System Configuration</h1>
+              <p class="page-subtitle">Permanent MySQL storage status, credentials, and connectivity manager.</p>
+            </div>
+          </div>
+
+          <div class="database-settings-grid">
+            <!-- Current Status Card -->
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Active Database Engine</h3>
+              </div>
+              <div class="card-body">
+                <div class="db-status-banner" id="settingsDbStatusBanner">
+                  <div class="db-status-icon" id="settingsDbStatusIcon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg>
+                  </div>
+                  <div class="db-status-info">
+                    <h4 id="settingsDbEngineTitle">Engine: SQLite (Zero-Config Active)</h4>
+                    <p id="settingsDbEngineDesc">Your invoices and client data are persistently stored locally. You can switch to MySQL below anytime with one click.</p>
+                  </div>
+                </div>
+
+                <div class="db-info-list">
+                  <div class="db-info-row">
+                    <span>Host:</span>
+                    <strong id="settingsDbHost">localhost</strong>
+                  </div>
+                  <div class="db-info-row">
+                    <span>Database:</span>
+                    <strong id="settingsDbName">dinvoice_db</strong>
+                  </div>
+                  <div class="db-info-row">
+                    <span>User:</span>
+                    <strong id="settingsDbUser">root</strong>
+                  </div>
+                  <div class="db-info-row">
+                    <span>Connection Status:</span>
+                    <span class="badge badge-success" id="settingsDbBadge">Operational</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Connect to MySQL Card -->
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">MySQL Server Connection</h3>
+                <p class="card-subtitle">Connect directly to your local MySQL instance (running on port 3306).</p>
+              </div>
+              <div class="card-body">
+                <form id="mysqlConfigForm" onsubmit="event.preventDefault(); Settings.connectMySQL();">
+                  <div class="form-row">
+                    <div class="form-group flex-2">
+                      <label for="mysqlHost">MySQL Host</label>
+                      <input type="text" id="mysqlHost" class="form-control" value="localhost" required>
+                    </div>
+                    <div class="form-group flex-1">
+                      <label for="mysqlPort">Port</label>
+                      <input type="number" id="mysqlPort" class="form-control" value="3306" required>
+                    </div>
+                  </div>
+
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label for="mysqlUser">Username</label>
+                      <input type="text" id="mysqlUser" class="form-control" value="root" required>
+                    </div>
+                    <div class="form-group">
+                      <label for="mysqlPassword">Password</label>
+                      <input type="password" id="mysqlPassword" class="form-control" placeholder="Enter root password">
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="mysqlDatabase">Database Name</label>
+                    <input type="text" id="mysqlDatabase" class="form-control" value="dinvoice_db" required>
+                    <span class="field-hint">If this database does not exist, D-Invoice will automatically create it and run migrations!</span>
+                  </div>
+
+                  <div id="mysqlConnectFeedback" class="connect-feedback" style="display: none;"></div>
+
+                  <div class="form-action-footer" style="margin-top: 1.5rem;">
+                    <button type="submit" class="btn btn-primary" id="btnConnectMySQL">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                      <span>Test & Connect MySQL</span>
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+
+    <!-- App Footer -->
+    <footer class="app-footer">
+      <div class="container footer-content">
+        <div><strong>D-Invoice</strong> &copy; 2026 — Modern Invoice Generator & Billing Suite</div>
+        <div class="footer-links">
+          <span>Responsive Design</span>
+          <span>•</span>
+          <span>Indian GST Ready</span>
+          <span>•</span>
+          <span>A4 PDF & Print</span>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- ================= MODALS ================= -->
+
+  <!-- MODAL 1: A4 INVOICE PREVIEW MODAL -->
+  <div class="modal-backdrop" id="previewModal" style="display: none;">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header print-hide">
+          <div class="modal-title-wrap">
+            <h3 class="modal-title" id="previewModalTitle">Invoice Preview</h3>
+            <span class="modal-subtitle">Professional Standard A4 Tax Invoice</span>
+          </div>
+          <div class="modal-header-actions">
+            <button class="btn btn-sm btn-outline" onclick="InvoicePreview.print()">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+              <span>Print</span>
+            </button>
+            <button class="btn btn-sm btn-primary" id="btnDownloadPdf" onclick="InvoicePreview.downloadPdf()">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+              <span>Download PDF</span>
+            </button>
+            <button class="modal-close" onclick="InvoicePreview.close()" aria-label="Close modal">&times;</button>
+          </div>
+        </div>
+
+        <div class="modal-body preview-modal-body">
+          <!-- Standard A4 Sheet Document -->
+          <div class="a4-sheet-wrapper">
+            <div class="a4-sheet" id="invoiceA4Sheet">
+              <!-- Dynamically populated by invoice-preview.js -->
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer print-hide">
+          <button class="btn btn-secondary" onclick="InvoicePreview.close()">Close</button>
+          <button class="btn btn-primary" onclick="InvoicePreview.downloadPdf()">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+            <span>Download A4 PDF</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 2: ADD / EDIT CLIENT MODAL -->
+  <div class="modal-backdrop" id="clientModal" style="display: none;">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title" id="clientModalTitle">Add Client</h3>
+          <button class="modal-close" onclick="Clients.closeModal()">&times;</button>
+        </div>
+        <form id="clientForm" onsubmit="event.preventDefault(); Clients.saveModal();">
+          <input type="hidden" id="modalClientId" value="">
+          <div class="modal-body">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="cModalName">Client Name <span class="required">*</span></label>
+                <input type="text" id="cModalName" class="form-control" required placeholder="e.g. Rajesh Sharma">
+              </div>
+              <div class="form-group">
+                <label for="cModalCompany">Company / Business Name</label>
+                <input type="text" id="cModalCompany" class="form-control" placeholder="e.g. Zenith Technologies">
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="cModalEmail">Email</label>
+                <input type="email" id="cModalEmail" class="form-control" placeholder="client@example.com">
+              </div>
+              <div class="form-group">
+                <label for="cModalPhone">Phone Number</label>
+                <input type="text" id="cModalPhone" class="form-control" placeholder="+91 98765 43210">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="cModalGstin">GSTIN (Tax ID)</label>
+              <input type="text" id="cModalGstin" class="form-control font-mono" placeholder="27AABCZ1234F1Z8" maxlength="15">
+            </div>
+
+            <div class="form-group">
+              <label for="cModalAddress1">Address Line 1</label>
+              <input type="text" id="cModalAddress1" class="form-control" placeholder="Building, Street">
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="cModalCity">City</label>
+                <input type="text" id="cModalCity" class="form-control" placeholder="e.g. Pune">
+              </div>
+              <div class="form-group">
+                <label for="cModalState">State <span class="required">*</span></label>
+                <select id="cModalState" class="form-control" required>
+                  <!-- Populated with Indian States -->
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="cModalPincode">PIN Code</label>
+                <input type="text" id="cModalPincode" class="form-control" placeholder="411057">
+              </div>
+              <div class="form-group">
+                <label for="cModalCountry">Country</label>
+                <input type="text" id="cModalCountry" class="form-control" value="India">
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" onclick="Clients.closeModal()">Cancel</button>
+            <button type="submit" class="btn btn-primary" id="btnSaveClient">Save Client</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 3: MARK AS PAID MODAL -->
+  <div class="modal-backdrop" id="markPaidModal" style="display: none;">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title">Record Payment</h3>
+          <button class="modal-close" onclick="InvoiceList.closeMarkPaidModal()">&times;</button>
+        </div>
+        <form id="markPaidForm" onsubmit="event.preventDefault(); InvoiceList.confirmMarkPaid();">
+          <input type="hidden" id="mpInvoiceId" value="">
+          <div class="modal-body">
+            <p class="modal-intro">Mark invoice <strong id="mpInvoiceNumber"></strong> as settled.</p>
+            <div class="form-group">
+              <label for="mpPaymentMethod">Payment Mode</label>
+              <select id="mpPaymentMethod" class="form-control">
+                <option value="Bank Transfer (NEFT/RTGS/IMPS)">Bank Transfer (NEFT/RTGS/IMPS)</option>
+                <option value="UPI">UPI / QR Code</option>
+                <option value="Cheque">Cheque</option>
+                <option value="Credit / Debit Card">Credit / Debit Card</option>
+                <option value="Cash">Cash</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="mpPaymentDate">Payment Date</label>
+              <input type="date" id="mpPaymentDate" class="form-control" required>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" onclick="InvoiceList.closeMarkPaidModal()">Cancel</button>
+            <button type="submit" class="btn btn-success">Confirm Paid</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 4: DELETE CONFIRMATION MODAL -->
+  <div class="modal-backdrop" id="deleteConfirmModal" style="display: none;">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title text-danger">Delete Confirmation</h3>
+          <button class="modal-close" onclick="App.closeDeleteModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p id="deleteConfirmMessage">Are you sure you want to delete this record? This action cannot be undone.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="App.closeDeleteModal()">Cancel</button>
+          <button type="button" class="btn btn-danger" id="deleteConfirmBtn">Yes, Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Scripts -->
+  <script src="/js/utils.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/dashboard.js"></script>
+  <script src="/js/invoice-preview.js"></script>
+  <script src="/js/invoice-form.js"></script>
+  <script src="/js/invoice-list.js"></script>
+  <script src="/js/clients.js"></script>
+  <script src="/js/business.js"></script>
+  <script src="/js/settings.js"></script>
+  <script src="/js/app.js"></script>
+</body>
+</html>

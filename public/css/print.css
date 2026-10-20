@@ -1,0 +1,94 @@
+/* ============================================================
+   D-INVOICE — PRISTINE A4 PRINT STYLESHEET
+   Strictly formatted for 210mm x 297mm standard paper
+   ============================================================ */
+
+@page {
+  size: A4 portrait;
+  margin: 10mm 12mm 10mm 12mm;
+}
+
+@media print {
+  html, body {
+    width: 210mm;
+    height: 100%;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #ffffff !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color: #0f172a !important;
+  }
+
+  /* Hide app navigation, headers, footers, and modal chrome */
+  .app-header,
+  .app-footer,
+  .app-main,
+  .modal-header,
+  .modal-footer,
+  .print-hide,
+  .toast-container,
+  .btn,
+  .mobile-menu-toggle {
+    display: none !important;
+  }
+
+  /* Force modal backdrop and dialog to be transparent and full-bleed */
+  .modal-backdrop {
+    position: static !important;
+    background: transparent !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    display: block !important;
+  }
+
+  .modal-dialog,
+  .modal-content,
+  .preview-modal-body,
+  .a4-sheet-wrapper {
+    box-shadow: none !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    background: transparent !important;
+    animation: none !important;
+  }
+
+  .a4-sheet {
+    width: 100% !important;
+    min-height: auto !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    box-shadow: none !important;
+    border: none !important;
+    font-size: 9pt !important;
+  }
+
+  .a4-header {
+    border-bottom: 2pt solid #1d4ed8 !important;
+  }
+
+  .a4-table th {
+    background-color: #1e40af !important;
+    color: #ffffff !important;
+    -webkit-print-color-adjust: exact !important;
+  }
+
+  .a4-grand-total-row td {
+    background-color: #eff6ff !important;
+    -webkit-print-color-adjust: exact !important;
+  }
+
+  .a4-box {
+    background: #f8fafc !important;
+    border: 1pt solid #cbd5e1 !important;
+    -webkit-print-color-adjust: exact !important;
+  }
+
+  .a4-amount-words {
+    background: #f1f5f9 !important;
+    -webkit-print-color-adjust: exact !important;
+  }
+}
