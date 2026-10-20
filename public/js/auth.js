@@ -190,6 +190,11 @@ const Auth = {
       code.includes('invalid-api-key') ||
       code.includes('app-not-authorized') ||
       code.includes('project-not-found') ||
+      code.includes('configuration-not-found') ||
+      code.includes('operation-not-allowed') ||
+      code.includes('admin-restricted-operation') ||
+      msg.includes('configuration-not-found') ||
+      msg.includes('configuration not found') ||
       msg.includes('api-key') ||
       msg.includes('api key') ||
       msg.includes('invalid-api-key') ||
