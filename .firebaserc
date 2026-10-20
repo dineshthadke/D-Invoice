@@ -1,5 +1,7 @@
 {
   "projects": {
     "default": "dinvoice-billing"
-  }
+  },
+  "targets": {},
+  "etags": {}
 }
