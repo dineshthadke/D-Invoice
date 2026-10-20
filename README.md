@@ -6,7 +6,19 @@
 
 ## 🌟 Key Features
 
-1. **📊 Comprehensive Dashboard**
+1. **🔐 Firebase Authentication & Security**
+   - **Email & Password Authentication**: Dedicated login and registration screens with input validation, password strength requirements, and clear Firebase error messages.
+   - **Authentication Guard**: Unauthenticated visitors are automatically routed to the Sign In / Sign Up portal before they can create or view invoices.
+   - **1-Click Quick Demo Sign-In**: Instant test credentials button (`demo@dinvoice.com` / `demo1234`) for rapid evaluation.
+   - **User Header Controls**: Displays user avatar initial, logged-in email badge, and a **Logout** button.
+
+2. **☁️ User-Scoped Firebase Firestore Storage**
+   - **Strict Data Isolation**: Every invoice, client, and business profile is linked to the authenticated user's unique Firebase User ID (`uid`).
+   - Users can **only** access, view, edit, and delete their own invoices.
+   - When users log in again, their previously saved invoices are automatically retrieved from Firestore.
+   - Included production-ready security rules in [firestore.rules](file:///c:/Users/Dinesh/Downloads/Antigravity/firestore.rules).
+
+3. **📊 Comprehensive Dashboard**
    - Real-time billing metrics: **Total Invoiced**, **Paid Invoices**, **Pending Invoices**, and **Overdue Invoices**.
    - Cumulative revenue tracking in Indian Rupees (**₹**).
    - Recent invoices table with quick action shortcuts.
